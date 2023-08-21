@@ -72,7 +72,7 @@
       <li>
         <router-link :class="modoNocturno ? 'router' : 'router'" to="/Login">
           <font-awesome-icon id="icon" icon="right-to-bracket" />
-          <p>iniciar sesión</p>
+          <p>Iniciar sesión</p>
         </router-link>
       </li>
       <div class="modo">
@@ -82,37 +82,39 @@
   </div>
 </template>
 <script>
+
 import { ref } from 'vue';
 import { onMounted, computed } from 'vue'
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router'
 
 import Switch from './Switch.vue';
+
 export default {
   name: 'SidebarMenu',
   components: {
     Switch
   },
   setup() {
-    const store = useStore();
-    const router = useRouter();
+    const store = useStore()
+    const router = useRouter()
 
-    const modoNocturno = computed(() => store.state.modoNocturno);
-    const usuarioConexion = computed(() => store.state.conexion);
-    const usuario = computed(() => store.state.usuario);
-
+    const modoNocturno = computed(() => store.state.modoNocturno)
+    const usuarioConexion = computed(() => store.state.conexion)
+    const usuario = computed(() => store.state.usuario)
     const isOpen = ref(true)
 
     const toggleDropdown = () => {
       isOpen.value = !isOpen.value
     }
+
     const modo = async () => {
       store.dispatch('modificoModoNocturno', modoNocturno);
     }
-    console.log(usuario.value)
+
     const cerrarSesion = () => {
       try {
-        console.log(usuario)
+    
           let value =
           {
             _id: usuario.value._id,
@@ -120,7 +122,7 @@ export default {
             password: usuario.value.password,
             email: usuario.value.email,
             phote: usuario.value.phote,
-            connection: !usuario.value.connection
+            connection: false
           }
           store.dispatch('updateUsuario', value) // Modifico su estado de 'connection' en la base de datos
 
@@ -136,7 +138,7 @@ export default {
             connection: false
           }
         
-          store.dispatch('setUser', value) // Centralizo datos del usuario
+          store.dispatch('setUsuario', value) // Centralizo datos del usuario
           store.dispatch('setConexion') // Este es para el ui ( habilita y desabilita prestasiones)
           router.push('/')
 
@@ -157,10 +159,9 @@ export default {
       modo,
       cerrarSesion,
       usuario,
-    };
-  },
-  components: { Switch }
-};
+    }
+  }
+}
 </script>
   
 <style scoped>
@@ -230,7 +231,7 @@ img {
 }
 
 .barside2 .router {
-  color: #444;
+  color: #5f5e5e;
   text-decoration: none;
   padding: 0 5px;
   display: flex;
@@ -239,6 +240,7 @@ img {
 }
 
 .router p {
+
   margin: 0 20px;
 }
 
@@ -289,7 +291,7 @@ ul button {
   width: 60%;
   height: 100%;
   transition: 0.5s ease-out;
-  border-left: 1px solid #bed8e6;
+  border-left: 1px solid #d4e9f4;
 
 }
 
@@ -314,13 +316,10 @@ ul li {
 }
 
 .barside2 ul li:hover {
-  background-color: #2d3133;
+  background-color: #d4e9f4;
 }
 
-.barside2 ul li:hover .router {
-  color: #f8f7f6;
 
-}
 
 ul.show {
   display: block;

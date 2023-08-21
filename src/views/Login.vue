@@ -37,43 +37,21 @@ export default {
 
         const store = useStore();
         const modoNocturno = computed(() => store.state.modoNocturno);
-        const usuarios = computed(() => store.state.usuarios);
 
-        const entrar = () => {
-            let estado = []
+        const entrar = async () => {
             try {
-                estado = usuarios.value.find(val => {
-                    return (
-                        (val.userName === userName.value && val.password === password.value) ||
-                        (val.email === userName.value && val.password === password.value)
-                    )
-                })
-
-                if (estado != '') {
-                    const state = true
-                    console.log(estado)
-                    const value =
-                    {
-                        _id: estado._id,
-                        userName: estado.userName,
-                        password: estado.password,
-                        email: estado.email,
-                        phote: estado.phote,
-                        connection: !estado.connection
-                    }
-
-                    localStorage.setItem('userName', value.userName)
-                    localStorage.setItem('password', value.password)
-                    localStorage.setItem('email', value.email)
-                    localStorage.setItem('phote', value.phote)
-                    localStorage.setItem('_id', value._id)
-                    localStorage.setItem('connection', value.connection)
-
-                    store.dispatch('setUser', value) // Centralizo datos del usuario
-                    store.dispatch('updateUsuario', value) // Modifico su estado de 'connection' en la base de datos
-                    store.dispatch('setConexion') // Este es para el ui ( habilita y desabilita prestasiones)
-                    router.push('/')
+                const value = {
+                    password: password.value,
+                    userName: userName.value
                 }
+                const resp = store.dispatch('setUsuario', value) // Centralizo datos del usuario
+                resp.then(resultado => {
+                    if (resultado) {
+                        router.push('/')
+                    }
+                }).catch(error => {
+                    console.error(error);
+                })
 
             } catch (error) {
                 console.log(error)
@@ -81,7 +59,7 @@ export default {
         }
 
         onMounted(async () => {
-            await store.dispatch('getUsers')
+            // await store.dispatch('getUsuarios')
         })
 
         return {

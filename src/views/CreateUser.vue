@@ -105,7 +105,7 @@ export default {
             validatePassword();
             if (form.value.phote && !passwordError.value && !emailError.value ) {
                 const value = form.value;
-                store.dispatch('createUser', value);
+                store.dispatch('createUsuario', value);
                 router.push('/');
                 console.log("Formulario válido, enviando datos...");
             } else {

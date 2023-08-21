@@ -31,8 +31,8 @@ export default {
       filteredResults.value = users_search;
     }
 
-    onMounted(async () => {
-      await store.dispatch('getUsers')
+    onMounted( () => {
+       store.dispatch('getUsuarios')
     })
 
     return {
@@ -88,7 +88,7 @@ export default {
         <article>
           <img :src="user.phote" alt="">
           <div :class="user.connection ? 'circuloGreen' : 'circuloRed'"></div>
-          <div class="alias">{{ user.userName }}</div>
+          <div id="name">{{ user.userName }}</div>
           <router-link class="button" :to="`/Chat/${user.id}`">
             <font-awesome-icon id="icon" icon="comments" /> Chat
           </router-link>
@@ -99,8 +99,8 @@ export default {
           <img :src="user.phote" alt="">
 
           <div :class="user.connection ? 'circuloGreen' : 'circuloRed'"></div>
-          <div class="alias">{{ user.userName }}</div>
-          <router-link class="button" :to="`/Chat/${user.id}`">
+          <div id="name">{{ user.userName }}</div>
+          <router-link class="button" :to="`/Chat/${user._id}`">
             <font-awesome-icon id="icon" icon="comments" /> Chat
           </router-link>
         </article>
@@ -132,17 +132,25 @@ export default {
   color: #0C1D25;
 }
 
-.circuloRed {
+.container2-nube .circuloRed {
+  position: relative;
+  left: -10px;
+  top: 11px;
+  height: 7px;
+  width: 7px;
+  background-color: rgb(167, 34, 34);
+  border-radius: 100%;
+}
+.container-nube .circuloRed {
   position: relative;
   left: -14px;
   top: 11px;
   height: 7px;
   width: 7px;
-  background-color: red;
+  background-color: rgb(167, 34, 34);
   border-radius: 100%;
 }
-
-.circuloGreen {
+.container-nube .circuloGreen {
   position: relative;
   left: -14px;
   top: 11px;
@@ -152,7 +160,16 @@ export default {
   border-radius: 100%;
 
 }
+.container2-nube .circuloGreen {
+  position: relative;
+  left: -10px;
+  top: 11px;
+  height: 7px;
+  width: 7px;
+  background-color: green;
+  border-radius: 100%;
 
+}
 .button2 {
   background-color: transparent;
   border: 1px solid #3192c7;
@@ -248,7 +265,6 @@ img {
   display: flex;
   margin-top: 3px;
   align-items: center;
-  cursor: pointer;
   padding: 5px;
 }
 
@@ -332,7 +348,7 @@ section::-webkit-scrollbar-thumb:hover {
 }
 
 .container2-nube section {
-  border: 1px solid #f8fdff;
+  border: 1px solid #d5e7f1;
   width: 90%;
   height: 40vh;
   margin: auto;
@@ -341,20 +357,30 @@ section::-webkit-scrollbar-thumb:hover {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   overflow: hidden;
   overflow-y: scroll;
-  background-color: #074b6f;
+ 
 }
 
 .container2-nube article {
-  background-color: #f8fdff;
   display: flex;
-  margin-top: 3px;
   align-items: center;
-  cursor: pointer;
-  padding: 5px;
+  padding: 7px;
 }
+.container2-nube article:hover {
+  background-color: #d4e9f4;
+}
+.container2-nube section #name {
+  color: #5f5e5e;
+  margin-left: 5px;
+  margin-bottom: 3px;
+  margin-right: 29px;
 
-section div {
-  margin: 0 5px;
+
+}
+.container-nube section #name {
+  color: #d4e9f4;
+  margin-left: 5px;
+  margin-bottom: 3px;
+  margin-right: 29px;
 
 
 }

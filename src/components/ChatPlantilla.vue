@@ -12,7 +12,7 @@ export default {
     },
     props: ['id'],
     name: 'ChatPlantillas',
-    
+
     setup(props) {
         const store = useStore()
 
@@ -67,9 +67,9 @@ export default {
         }
 
         const msj = ref({
-            foto_emisor: localStorage.getItem('foto') || usuario.value.foto,
-            nombre_emisor: localStorage.getItem('alias') || usuario.value.alias,
-            id_emisor: localStorage.getItem('id') || idemisor.value,
+            foto_emisor: localStorage.getItem('phote') || usuario.value.phote,
+            nombre_emisor: localStorage.getItem('userName') || usuario.value.userName,
+            id_emisor: localStorage.getItem('_id') || usuario.value._id,
             id_receptor: props.id,
             mensaje: '',
             fecha: serverTimestamp(),
@@ -79,10 +79,12 @@ export default {
         })
 
         const send = () => {
-            // console.log('msj', msj.value.mensaje)
-            const value = msj.value
-            store.dispatch('crearMensaje', value);
-            msj.value.mensaje = ''
+            if (usuario.value._id) {
+                const value = msj.value
+                store.dispatch('crearMensaje', value);
+                msj.value.mensaje = ''
+            }
+
         }
 
         const chequear = (value) => {
@@ -100,7 +102,6 @@ export default {
 
         onMounted(async () => {
             await store.dispatch('fetchMensajes');
-            await store.dispatch('fetchUsuarios');
         });
 
         return {
@@ -110,7 +111,7 @@ export default {
             msj,
             modoNocturno,
             mensajes,
-            idemisor,
+            usuario,
             props,
             fechas
         }
@@ -120,76 +121,77 @@ export default {
 
 <template >
     <div :class="modoNocturno ? 'color1' : 'color2'">
-    <div :class="modoNocturno ? 'nocturno' : 'dia'">
-        <section class="panel-sup">
-            <div class="panel-sup-phote">
-                <router-link to="/">
-                    <font-awesome-icon id="icon" icon="arrow-left" />
-                </router-link>
-                <!-- <img src="../assets/messi-perfil.jpg" alt=""> -->
-            </div>
-            <!-- <div class="panel-sup-name">
+        <div :class="modoNocturno ? 'nocturno' : 'dia'">
+            <section class="panel-sup">
+                <div class="panel-sup-phote">
+                    <router-link to="/">
+                        <font-awesome-icon id="icon" icon="arrow-left" />
+                    </router-link>
+                    <!-- <img src="../assets/messi-perfil.jpg" alt=""> -->
+                </div>
+                <!-- <div class="panel-sup-name">
                 <h3>Lionel Messi </h3>
             </div> -->
-        </section>
+            </section>
 
-        <section v-for="mensaje in mensajes" :key="mensaje.id"
-            :class="(mensaje.value.id_emisor === idemisor && mensaje.value.id_receptor === props.id) || (mensaje.value.id_emisor === props.id && mensaje.value.id_receptor === idemisor) ? 'panel-body' : 'none'">
-            <div v-if="(mensaje.value.id_emisor === idemisor && mensaje.value.id_receptor === props.id) || (mensaje.value.id_emisor === props.id && mensaje.value.id_receptor === idemisor)"
-                class="messages-container">
-                <div v-if="chequear(mensaje.value.fecha_e) !== ''" class="fecha">
-                    <p>{{ mensaje.value.fecha_e }}</p>
-                </div>
-
-                <div v-if="mensaje.value.id_emisor != idemisor" class="msj-me">
-                    <img :src="mensaje.value.foto_emisor" alt="">
-                    <div class="nodo">
-                        <h3>{{ mensaje.value.nombre_emisor }}</h3>
-                        <p>
-                            {{ mensaje.value.mensaje }}
-                        </p>
-                        <span>{{ mensaje.value.hora }}</span>
-
+            <section v-for="mensaje in mensajes" :key="mensaje.id"
+                :class="(mensaje.value.id_emisor === usuario._id && mensaje.value.id_receptor === props.id) || (mensaje.value.id_emisor === props.id && mensaje.value.id_receptor === usuario._id) ? 'panel-body' : 'none'">
+                <div v-if="(mensaje.value.id_emisor === usuario._id && mensaje.value.id_receptor === props.id) || (mensaje.value.id_emisor === props.id && mensaje.value.id_receptor === usuario._id)"
+                    class="messages-container">
+                    <div v-if="chequear(mensaje.value.fecha_e) !== ''" class="fecha">
+                        <p>{{ mensaje.value.fecha_e }}</p>
                     </div>
-                </div>
 
-                <div v-else class="msj-you">
-                    <div class="nodo">
-                        <h3>{{ mensaje.value.nombre_emisor }}</h3>
-                        <p>
-                            {{ mensaje.value.mensaje }}
-                        </p>
-                        <span>{{ mensaje.value.hora }}</span>
-                    </div>
-                    <div class="float">
+                    <div v-if="mensaje.value.id_emisor != usuario._id" class="msj-me">
                         <img :src="mensaje.value.foto_emisor" alt="">
-                        <font-awesome-icon @click="deleteMensaje(mensaje.id)" id="icon" icon="trash" />
+                        <div class="nodo">
+                            <h3>{{ mensaje.value.nombre_emisor }}</h3>
+                            <p>
+                                {{ mensaje.value.mensaje }}
+                            </p>
+                            <span>{{ mensaje.value.hora }}</span>
+
+                        </div>
                     </div>
+
+                    <div v-else class="msj-you">
+                        <div class="nodo">
+                            <h3>{{ mensaje.value.nombre_emisor }}</h3>
+                            <p>
+                                {{ mensaje.value.mensaje }}
+                            </p>
+                            <span>{{ mensaje.value.hora }}</span>
+                        </div>
+                        <div class="float">
+                            <img :src="mensaje.value.foto_emisor" alt="">
+                            <font-awesome-icon @click="deleteMensaje(mensaje.id)" id="icon" icon="trash" />
+                        </div>
+                    </div>
+
                 </div>
+            </section>
 
-            </div>
-        </section>
-
-        <section class="panel-inf">
-            <input v-model="msj.mensaje" type="text" placeholder="Mensaje">
-            <button @click="send">
-                <font-awesome-icon id="icon" icon="paper-plane" />
-            </button>
-        </section>
+            <section class="panel-inf">
+                <input v-model="msj.mensaje" type="text" placeholder="Mensaje">
+                <button @click="send">
+                    <font-awesome-icon id="icon" icon="paper-plane" />
+                </button>
+            </section>
+        </div>
     </div>
-</div>
-
 </template>
 
 <style scoped>
-.color1{
+.color1 {
     background-color: #0C1D25;
     height: 100vh;
 }
-.color2{
+
+.color2 {
     background-color: #EFEAE2;
     height: 100vh;
 }
+
 .nocturno {
     padding: 77px 0;
     background-color: #0C1D25;

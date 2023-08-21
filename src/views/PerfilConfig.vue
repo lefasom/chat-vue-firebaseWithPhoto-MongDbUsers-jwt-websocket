@@ -3,32 +3,17 @@
         <LogoAndMenu />
         <div class="user-registration">
             <form @submit.prevent="submitForm">
-                <!-- <div class="form-group">
-                    <label for="customImageInput" id="customImageLabel">
-                        <font-awesome-icon class="img1" icon="camera" />
-                        <div v-if="form.foto" class="img2">
-                            <img :src="img" alt="Uploaded Image" />
-                        </div>
-
-                    </label>
-                    <input type="file" id="customImageInput" @change="handleFileChange" style="display: none;">
-                </div> -->
-
-                <div v-if="img != form.foto">
-                    <button @click="editarDatos" type="submit">Editar foto</button>
-                </div>
-
                 <div class="form-group">
                     <label for="">Correo Electronico</label>
-                    <input v-model="form.correo" type="email" id="email" placeholder="Correo Electronico">
+                    <input v-model="form.email" type="email" id="email" placeholder="Correo Electronico">
                 </div>
                 <div class="form-group">
                     <label for="">Contraseña</label>
-                    <input v-model="form.contrasena" type="password" id="password" placeholder="Contraseña">
+                    <input v-model="form.password" type="password" id="password" placeholder="Contraseña">
                 </div>
                 <div class="form-group">
-                    <label for="">Alias</label>
-                    <input v-model="form.alias" type="text" id="alias" placeholder="Alias">
+                    <label for="">Nombre de usuario</label>
+                    <input v-model="form.userName" type="text" id="alias" placeholder="Nombre de usuario">
                 </div>
                 <button @click="editarDatos" type="submit">Editar datos</button>
             </form>
@@ -40,8 +25,6 @@
 import LogoAndMenu from '../components/LogoAndMenu.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { ref } from 'vue'
-import { uploadFile } from '../firebase/firebase'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -57,54 +40,29 @@ export default {
         const store = useStore();
         const modoNocturno = computed(() => store.state.modoNocturno);
         const usuario = computed(() => store.state.usuario);
-        let id = computed(() => store.state.id);
         let form =
         {
-            alias: usuario.value.alias,
-            contrasena: usuario.value.contrasena,
-            correo: usuario.value.correo,
-            foto: usuario.value.foto,
-            conexion: usuario.value.conexion
+            userName: usuario.value.userName,
+            password: usuario.value.password,
+            phote: usuario.value.phote,
+            _id: usuario.value._id,
+            email: usuario.value.email
 
         }
 
-        const img = ref(form.foto);
-
-
         const editarDatos = async () => {
             const value = form
-            id = id.value
-            await store.dispatch('updateUsuario', { value, id })
-            await store.dispatch('setUsuario', { value, id })
+            await store.dispatch('updateUsuario', value)
+            store.dispatch('setDatosUsuario', value)
+            
             router.push('/');
 
         }
 
-        const cargarPhoto = async (file) => {
-            const result = await uploadFile(file)
-            // console.log(result)
-            form.foto = result
-        }
-
-        const handleFileChange = (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-
-                reader.onload = (e) => {
-                    img.value = e.target.result;
-                };
-
-                reader.readAsDataURL(file);
-                cargarPhoto(file)
-            }
-        }
         return {
             modoNocturno,
-            handleFileChange,
             editarDatos,
             form,
-            img
         }
     }
 }

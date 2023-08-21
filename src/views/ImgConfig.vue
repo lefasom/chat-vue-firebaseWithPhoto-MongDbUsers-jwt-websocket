@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <label for="customImageInput" id="customImageLabel">
                         <font-awesome-icon class="img1" icon="camera" />
-                        <div v-if="form.foto" class="img2">
+                        <div v-if="form.phote" class="img2">
                             <img :src="img" alt="Uploaded Image" />
                         </div>
                     </label>
@@ -41,53 +41,45 @@ export default {
         const store = useStore();
         const modoNocturno = computed(() => store.state.modoNocturno);
         const usuario = computed(() => store.state.usuario);
-        let id = computed(() => store.state.id);
+       
         let form =
         {
-            alias: usuario.value.alias,
-            contrasena: usuario.value.contrasena,
-            correo: usuario.value.correo,
-            foto: usuario.value.foto,
-            conexion: usuario.value.conexion
+            userName: usuario.value.userName,
+            password: usuario.value.password,
+            phote: usuario.value.phote,
+            _id: usuario.value._id,
+            email: usuario.value.email
         }
 
-        const img = ref(form.foto)
+        const img = ref(form.phote)
         const modificando = ref(false)
 
 
 
         const editarDatos = async () => {
             const value = form
-            id = id.value
-            await store.dispatch('updateUsuario', { value, id })
-            await store.dispatch('setUsuario', { value, id })
-            router.push('/');
+            await store.dispatch('updateUsuario', value)
+            store.dispatch('setDatosUsuario', value)
 
+            router.push('/');
         }
 
         const cargarPhoto = async (file) => {
             const result = await uploadFile(file)
-            // console.log(result)
-            form.foto = result
-            
+            form.phote = result
             img.value = result
             modificando.value = true
-
         }
 
         const handleFileChange = (event) => {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-
-                // reader.onload = (e) => {
-                //     img.value = e.target.result;
-                // };
-
                 reader.readAsDataURL(file);
                 cargarPhoto(file)
             }
         }
+
         return {
             modoNocturno,
             handleFileChange,
