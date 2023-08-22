@@ -9,7 +9,7 @@
       </div>
       <div class="perfil">
         <router-link :class="modoNocturno ? 'router' : 'router'" to="/ImgConfig">
-          <img :src="usuario.phote" alt="">
+          <img :src="usuario.photo" alt="">
         </router-link>
         <div>
           <p>{{ usuario.userName }}</p>
@@ -121,7 +121,7 @@ export default {
             userName: usuario.value.userName,
             password: usuario.value.password,
             email: usuario.value.email,
-            phote: usuario.value.phote,
+            photo: usuario.value.photo,
             connection: false
           }
           store.dispatch('updateUsuario', value) // Modifico su estado de 'connection' en la base de datos
@@ -134,7 +134,7 @@ export default {
             userName: '',
             password: '',
             email: '',
-            phote: '',
+            photo: '',
             connection: false
           }
         

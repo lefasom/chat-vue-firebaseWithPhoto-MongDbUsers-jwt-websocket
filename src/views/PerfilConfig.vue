@@ -44,7 +44,7 @@ export default {
         {
             userName: usuario.value.userName,
             password: usuario.value.password,
-            phote: usuario.value.phote,
+            photo: usuario.value.photo,
             _id: usuario.value._id,
             email: usuario.value.email
 

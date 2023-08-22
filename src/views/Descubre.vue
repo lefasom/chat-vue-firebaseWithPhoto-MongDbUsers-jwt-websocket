@@ -20,7 +20,7 @@ export default {
 
     const array2 = [{ "id": 1, "grupo": "Lucas Vargas" }, { "id": 2, "grupo": "Mike Huaman" }, { "id": 3, "grupo": "Pedro perez" }, { "id": 4, "grupo": "Franco Echegaray" }, { "id": 5, "grupo": "Ignacio Herrera" }, { "id": 6, "grupo": "Lisandro Tamola" }, { "id": 7, "grupo": "Renzo Perez" }, { "id": 8, "grupo": "Dylan Sombra" }, { "id": 9, "grupo": "Diego Sanfurgo" }, { "id": 10, "grupo": "Jose Lagos" }, { "id": 11, "grupo": "Nicolas Estalles" }, { "id": 12, "grupo": "Eros Silva" }];
     const array = [{ "id": 1, "grupo": "Grupo de motos" }, { "id": 2, "grupo": "Apoyo escolar" }, { "id": 3, "grupo": "Grupo familiar" }, { "id": 4, "grupo": "Parque " }, { "id": 5, "grupo": "Grupo familiar" }, { "id": 6, "grupo": "Facultad" }, { "id": 7, "grupo": "Grupo de motos" }, { "id": 8, "grupo": "Apoyo escolar" }, { "id": 9, "grupo": "Grupo familiar" }, { "id": 10, "grupo": "Parque " }, { "id": 11, "grupo": "Grupo familiar" }, { "id": 12, "grupo": "Facultad" }, { "id": 13, "grupo": "Grupo de motos" }, { "id": 14, "grupo": "Apoyo escolar" }, { "id": 15, "grupo": "Grupo familiar" }, { "id": 16, "grupo": "Parque " }, { "id": 17, "grupo": "Grupo familiar" }, { "id": 18, "grupo": "Facultad" }, { "id": 19, "grupo": "Grupo de motos" }, { "id": 20, "grupo": "Apoyo escolar" }, { "id": 21, "grupo": "Grupo familiar" }, { "id": 22, "grupo": "Parque " }, { "id": 23, "grupo": "Grupo familiar" }, { "id": 24, "grupo": "Facultad" }];
-
+console.log(usuarios)
     const changeTable = () => {
       tabla.value = !tabla.value
     }
@@ -86,7 +86,7 @@ export default {
       </div>
       <div v-if="tabla && search != ''" v-for="user in filteredResults" :key="user.id">
         <article>
-          <img :src="user.phote" alt="">
+          <img :src="user.photo" alt="">
           <div :class="user.connection ? 'circuloGreen' : 'circuloRed'"></div>
           <div id="name">{{ user.userName }}</div>
           <router-link class="button" :to="`/Chat/${user.id}`">
@@ -96,7 +96,7 @@ export default {
       </div>
       <div v-if="tabla && search == ''" v-for="user in usuarios" :key="user.id">
         <article>
-          <img :src="user.phote" alt="">
+          <img :src="user.photo" alt="">
 
           <div :class="user.connection ? 'circuloGreen' : 'circuloRed'"></div>
           <div id="name">{{ user.userName }}</div>

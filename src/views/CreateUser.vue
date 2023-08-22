@@ -30,7 +30,7 @@
                     <label for="">Nombre de usuario</label>
                     <input v-model.trim="form.userName" type="text" id="alias" placeholder="Nombre de usuario">
                 </div>
-                <div v-if="form.phote != ''">
+                <div v-if="form.photo != ''">
                     <button type="submit">Registrarse</button>
                 </div>
                 <div v-if="emailError" class="error-message">Ingrese un correo válido</div>
@@ -70,7 +70,7 @@ export default {
             email: null,
             password: null,
             userName: null,
-            phote: '',
+            photo: '',
             connection: false
         });
         const validateEmail = () => {
@@ -98,12 +98,12 @@ export default {
         const cargarPhoto = async (file) => {
             const result = await uploadFile(file)
             // console.log(result)
-            form.value.phote = result
+            form.value.photo = result
         }
         const registrarse = () => {
             validateEmail();
             validatePassword();
-            if (form.value.phote && !passwordError.value && !emailError.value ) {
+            if (form.value.photo && !passwordError.value && !emailError.value ) {
                 const value = form.value;
                 store.dispatch('createUsuario', value);
                 router.push('/');

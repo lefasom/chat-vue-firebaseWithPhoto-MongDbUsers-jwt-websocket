@@ -67,7 +67,7 @@ export default {
         }
 
         const msj = ref({
-            foto_emisor: localStorage.getItem('phote') || usuario.value.phote,
+            foto_emisor: localStorage.getItem('photo') || usuario.value.photo,
             nombre_emisor: localStorage.getItem('userName') || usuario.value.userName,
             id_emisor: localStorage.getItem('_id') || usuario.value._id,
             id_receptor: props.id,

@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <label for="customImageInput" id="customImageLabel">
                         <font-awesome-icon class="img1" icon="camera" />
-                        <div v-if="form.phote" class="img2">
+                        <div v-if="form.photo" class="img2">
                             <img :src="img" alt="Uploaded Image" />
                         </div>
                     </label>
@@ -46,12 +46,12 @@ export default {
         {
             userName: usuario.value.userName,
             password: usuario.value.password,
-            phote: usuario.value.phote,
+            photo: usuario.value.photo,
             _id: usuario.value._id,
             email: usuario.value.email
         }
 
-        const img = ref(form.phote)
+        const img = ref(form.photo)
         const modificando = ref(false)
 
 
@@ -66,7 +66,7 @@ export default {
 
         const cargarPhoto = async (file) => {
             const result = await uploadFile(file)
-            form.phote = result
+            form.photo = result
             img.value = result
             modificando.value = true
         }

@@ -3,7 +3,7 @@ import { createStore } from 'vuex'
 import { db } from '../firebase/firebase'
 import { getDocs, collection, doc, deleteDoc, addDoc, updateDoc, getDoc, query, orderBy, onSnapshot } from 'firebase/firestore'
 import Axios from 'axios'
-Axios.defaults.baseURL = "https://backend-mongo-db.vercel.app/"
+Axios.defaults.baseURL = "http://localhost:3001"
 const store = createStore({
   state() {
     return {
@@ -13,7 +13,7 @@ const store = createStore({
         userName: '',
         password: '',
         email: '',
-        phote: '',
+        photo: '',
         connection: false,
         _id: '',
       },
@@ -42,7 +42,7 @@ const store = createStore({
       state.usuario.userName = value.userName
       state.usuario.password = value.password
       state.usuario.email = value.email
-      state.usuario.phote = value.phote
+      state.usuario.photo = value.photo
       state.usuario.connection = !value.connection
       state.usuario._id = value._id
     },
@@ -121,7 +121,7 @@ const store = createStore({
             userName: val.userName,
             password: val.password,
             email: val.email,
-            phote: val.phote,
+            photo: val.photo,
             connection: true,
             _id: val._id
           }
