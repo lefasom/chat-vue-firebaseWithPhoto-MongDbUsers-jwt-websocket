@@ -54,11 +54,11 @@ export default {
             const value = form
             await store.dispatch('updateUsuario', value)
             store.dispatch('setDatosUsuario', value)
-            
+
             router.push('/');
 
         }
-
+      
         return {
             modoNocturno,
             editarDatos,

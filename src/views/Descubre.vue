@@ -2,6 +2,10 @@
 import { computed, onMounted } from 'vue'
 import { useStore } from 'vuex';
 import { ref } from 'vue';
+import io from 'socket.io-client'
+
+const socket = io.connect('http://localhost:3002')
+
 import LogoAndMenu from "../components/LogoAndMenu.vue";
 export default {
   name: 'crear',
@@ -17,10 +21,9 @@ export default {
     const usuarios = computed(() => store.state.usuarios)
     const filteredResults = ref([]);
     const search = ref('')
-
     const array2 = [{ "id": 1, "grupo": "Lucas Vargas" }, { "id": 2, "grupo": "Mike Huaman" }, { "id": 3, "grupo": "Pedro perez" }, { "id": 4, "grupo": "Franco Echegaray" }, { "id": 5, "grupo": "Ignacio Herrera" }, { "id": 6, "grupo": "Lisandro Tamola" }, { "id": 7, "grupo": "Renzo Perez" }, { "id": 8, "grupo": "Dylan Sombra" }, { "id": 9, "grupo": "Diego Sanfurgo" }, { "id": 10, "grupo": "Jose Lagos" }, { "id": 11, "grupo": "Nicolas Estalles" }, { "id": 12, "grupo": "Eros Silva" }];
     const array = [{ "id": 1, "grupo": "Grupo de motos" }, { "id": 2, "grupo": "Apoyo escolar" }, { "id": 3, "grupo": "Grupo familiar" }, { "id": 4, "grupo": "Parque " }, { "id": 5, "grupo": "Grupo familiar" }, { "id": 6, "grupo": "Facultad" }, { "id": 7, "grupo": "Grupo de motos" }, { "id": 8, "grupo": "Apoyo escolar" }, { "id": 9, "grupo": "Grupo familiar" }, { "id": 10, "grupo": "Parque " }, { "id": 11, "grupo": "Grupo familiar" }, { "id": 12, "grupo": "Facultad" }, { "id": 13, "grupo": "Grupo de motos" }, { "id": 14, "grupo": "Apoyo escolar" }, { "id": 15, "grupo": "Grupo familiar" }, { "id": 16, "grupo": "Parque " }, { "id": 17, "grupo": "Grupo familiar" }, { "id": 18, "grupo": "Facultad" }, { "id": 19, "grupo": "Grupo de motos" }, { "id": 20, "grupo": "Apoyo escolar" }, { "id": 21, "grupo": "Grupo familiar" }, { "id": 22, "grupo": "Parque " }, { "id": 23, "grupo": "Grupo familiar" }, { "id": 24, "grupo": "Facultad" }];
-console.log(usuarios)
+
     const changeTable = () => {
       tabla.value = !tabla.value
     }
@@ -31,10 +34,17 @@ console.log(usuarios)
       filteredResults.value = users_search;
     }
 
-    onMounted( () => {
-       store.dispatch('getUsuarios')
-    })
 
+
+    onMounted(async () => {
+
+     await store.dispatch('getUsuarios')
+      socket.on("updateUser", (data) => {
+        // console.log('new log',data)
+        store.dispatch('getUsuarios')
+      })
+    })
+ 
     return {
       LogoAndMenu,
       modoNocturno,
@@ -141,6 +151,7 @@ console.log(usuarios)
   background-color: rgb(167, 34, 34);
   border-radius: 100%;
 }
+
 .container-nube .circuloRed {
   position: relative;
   left: -14px;
@@ -150,6 +161,7 @@ console.log(usuarios)
   background-color: rgb(167, 34, 34);
   border-radius: 100%;
 }
+
 .container-nube .circuloGreen {
   position: relative;
   left: -14px;
@@ -160,6 +172,7 @@ console.log(usuarios)
   border-radius: 100%;
 
 }
+
 .container2-nube .circuloGreen {
   position: relative;
   left: -10px;
@@ -170,6 +183,7 @@ console.log(usuarios)
   border-radius: 100%;
 
 }
+
 .button2 {
   background-color: transparent;
   border: 1px solid #3192c7;
@@ -357,7 +371,7 @@ section::-webkit-scrollbar-thumb:hover {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   overflow: hidden;
   overflow-y: scroll;
- 
+
 }
 
 .container2-nube article {
@@ -365,9 +379,11 @@ section::-webkit-scrollbar-thumb:hover {
   align-items: center;
   padding: 7px;
 }
+
 .container2-nube article:hover {
   background-color: #d4e9f4;
 }
+
 .container2-nube section #name {
   color: #5f5e5e;
   margin-left: 5px;
@@ -376,6 +392,7 @@ section::-webkit-scrollbar-thumb:hover {
 
 
 }
+
 .container-nube section #name {
   color: #d4e9f4;
   margin-left: 5px;

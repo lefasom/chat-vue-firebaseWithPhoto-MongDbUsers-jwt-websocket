@@ -21,7 +21,12 @@
 import LogoAndMenu from "../components/LogoAndMenu.vue";
 import { useRouter } from 'vue-router'
 import { computed, onMounted, ref } from 'vue'
+
 import { useStore } from 'vuex'
+import io from 'socket.io-client'
+
+const socket = io.connect('http://localhost:3002')
+
 
 export default {
     name: 'Login',
@@ -47,6 +52,7 @@ export default {
                 const resp = store.dispatch('setUsuario', value) // Centralizo datos del usuario
                 resp.then(resultado => {
                     if (resultado) {
+                        socket.emit('login', resultado)
                         router.push('/')
                     }
                 }).catch(error => {
@@ -58,8 +64,11 @@ export default {
             }
         }
 
+
         onMounted(async () => {
-            // await store.dispatch('getUsuarios')
+            socket.on("updateUser", (data) => {
+                store.dispatch('getUsuarios')
+            })
         })
 
         return {

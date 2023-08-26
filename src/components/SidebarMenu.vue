@@ -89,6 +89,9 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router'
 
 import Switch from './Switch.vue';
+import io from 'socket.io-client'
+
+const socket = io.connect('http://localhost:3002')
 
 export default {
   name: 'SidebarMenu',
@@ -140,6 +143,8 @@ export default {
         
           store.dispatch('setUsuario', value) // Centralizo datos del usuario
           store.dispatch('setConexion') // Este es para el ui ( habilita y desabilita prestasiones)
+          socket.emit('login', value)
+         
           router.push('/')
 
       } catch (error) {

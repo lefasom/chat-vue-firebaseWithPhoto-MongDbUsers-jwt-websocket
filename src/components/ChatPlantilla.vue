@@ -97,13 +97,13 @@ export default {
         }
 
         const deleteMensaje = (id) => {
-            store.dispatch('borrarMensaje', id);
+            store.dispatch('borrarMensaje', id)
         }
 
         onMounted(async () => {
-            await store.dispatch('fetchMensajes');
-        });
-
+            await store.dispatch('fetchMensajes')
+        })
+     
         return {
             send,
             chequear,

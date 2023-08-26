@@ -27,7 +27,6 @@ import {
     faArrowRightRotate
 } from '@fortawesome/free-solid-svg-icons'
 import store from './vuex/store'
-import store2 from './vuex/store'
 
 /* add icons to the library */
 library.add(
@@ -51,5 +50,6 @@ library.add(
 
 const app = createApp(App);
 app.component('font-awesome-icon', FontAwesomeIcon)
-app.use(store2);
+
+app.use(store);
 app.use(router).mount('#app')
