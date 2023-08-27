@@ -26,32 +26,32 @@ const store = createStore({
 
     // modoNocturno
 
-    setModoNocturno(state) {
+    SET_MODO_NOCTURNO(state) {
       state.modoNocturno = !state.modoNocturno
     },
 
     // chat
 
-    setMensajes(state, msj) {
+    SET_MENSAJE(state, msj) {
       state.mensajes = msj
     },
 
     // usuarios
 
-    setUsuario(state, value) {
+    SET_USER(state, value) {
       state.usuario.userName = value.userName
       state.usuario.password = value.password
       state.usuario.email = value.email
       state.usuario.photo = value.photo
-      state.usuario.connection = !value.connection
+      state.usuario.connection = true
       state.usuario._id = value._id
     },
 
-    setUsuarios(state, us) {
+    SET_USERS(state, us) {
       state.usuarios = us
     },
 
-    setConexion(state) {
+    SET_CONNECTION(state) {
       state.conexion = !state.conexion
     },
 
@@ -61,7 +61,7 @@ const store = createStore({
     // modoNocturno
 
     modificoModoNocturno({ commit }) {
-      commit('setModoNocturno')
+      commit('SET_MODO_NOCTURNO')
     },
 
     // chat
@@ -74,7 +74,7 @@ const store = createStore({
           id: doc.id,
           value: doc.data()
         }));
-        commit('setMensajes', msj)
+        commit('SET_MENSAJE', msj)
       });
     },
 
@@ -90,7 +90,7 @@ const store = createStore({
     // usuarios
 
     setConexion({ commit }) {
-      commit('setConexion')
+      commit('SET_CONNECTION')
     },
 
     async createUsuario({ commit }, value) {
@@ -100,7 +100,7 @@ const store = createStore({
     async getUsuarios({ commit }) {
       const resp = await Axios.get('/getUsers')
       const us = resp.data
-      commit('setUsuarios', us)
+      commit('SET_USERS', us)
     },
 
     async updateUsuario({ commit }, value) {// Muestro si los usuarios estan conectados en el servidor
@@ -114,7 +114,10 @@ const store = createStore({
           userName: value.userName,
           password: value.password,
         })
+        console.log(resp)
+
         if (resp) {
+          localStorage.setItem('token', resp.data.token);
           const val = resp.data.user
           // Muestro si los usuarios estan conectados en el servidor => {
           const value = {
@@ -122,21 +125,46 @@ const store = createStore({
             password: val.password,
             email: val.email,
             photo: val.photo,
-            connection: true,
+            connection: val.connection,
             _id: val._id
           }
+          console.log(value)
           await store.dispatch('updateUsuario', value)
           // } <= Muestro si los usuarios estan conectados en el servidor
-          commit('setUsuario', value)
-          commit('setConexion')
+          commit('SET_USER', value)
         }
         return resp
       } catch (error) {
         console.log(error)
       }
     },
+
+    async getLogin({ commit }, token) {
+
+      const resp = await Axios.post('/getLogin', { token })
+      if (resp.data !== 'No token') {
+        console.log(resp.data)
+        const value = resp.data.user
+        commit('SET_USER', value)
+        commit('SET_CONNECTION')
+      }
+
+    },
     async setDatosUsuario({ commit }, value) {
-      commit('setUsuario', value)
+      commit('SET_USER', value)
+    },
+    async destruirEstado({ commit }) {
+      const value =
+      {
+        _id: '',
+        userName: '',
+        password: '',
+        email: '',
+        photo: '',
+        connection: false
+      }
+      console.log('Logout')
+      commit('SET_USER', value)
     }
   }
 })

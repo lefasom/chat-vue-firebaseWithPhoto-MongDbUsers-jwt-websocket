@@ -37,7 +37,8 @@ export default {
 
 
     onMounted(async () => {
-
+      const token = localStorage.getItem('token')
+        await store.dispatch('getLogin',token)
      await store.dispatch('getUsuarios')
       socket.on("updateUser", (data) => {
         // console.log('new log',data)

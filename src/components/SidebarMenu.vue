@@ -131,17 +131,9 @@ export default {
 
           localStorage.clear()
        
-          value =
-          {
-            _id: '',
-            userName: '',
-            password: '',
-            email: '',
-            photo: '',
-            connection: false
-          }
+   
         
-          store.dispatch('setUsuario', value) // Centralizo datos del usuario
+          store.dispatch('destruirEstado') // Centralizo datos del usuario
           store.dispatch('setConexion') // Este es para el ui ( habilita y desabilita prestasiones)
           socket.emit('login', value)
          
